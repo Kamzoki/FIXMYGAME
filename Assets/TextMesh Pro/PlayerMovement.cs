@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
     public Transform groundCheck;
     public float checkRadius;
     public LayerMask whatIsGround;
+    Animator myAnimation;
 
     bool isFacingRight = false;
 
@@ -29,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rigBody = GetComponent<Rigidbody2D>();
+        myAnimation = GetComponent<Animator>();
         playerCollider = GetComponent<BoxCollider2D>();
 
         if (!rigBody)
@@ -41,9 +43,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void MovePlayer (Vector2 direction)
     {
-            Vector2 newForce = direction * _Speed;
-            rigBody.velocity = newForce;
+        Vector2 newForce = direction * _Speed;
+        rigBody.velocity = newForce;
 
+        myAnimation.SetFloat("speed", rigBody.velocity.magnitude);
         if (direction.x > 0 && isFacingRight)
         {
             FlipCharacter();
@@ -58,32 +61,15 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isGrounded)
         {
-            Vector2 jumpForce = new Vector2(0, 1) * _JumpPower;
-
-            if (gameObject.transform.position.y < jumpThreshold)
-            {
-                Debug.Log(jumpThreshold);
-                rigBody.velocity = jumpForce;
-            }
-            else
-            {
-                Debug.Log("NotJumping");
-                isJumping = false;
-            }
+            Vector2 jumpForce = new Vector2(rigBody.velocity.x, 1) * _JumpPower;
+            rigBody.AddForce(jumpForce);
         }
     }
 
     private void FixedUpdate()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
-        if (gameObject.transform.position.y >= jumpThreshold)
-        {
-            Debug.Log("LOL");
-        }
-        if (Input.GetKeyUp(KeyCode.Space) && isGrounded)
-        {
-            JumpPlayer();
-        }
+
     }
     private void FlipCharacter()
     {

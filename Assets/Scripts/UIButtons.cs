@@ -13,7 +13,6 @@ public class UIButtons : MonoBehaviour
     {        
         if (GetPlayer())
         {
-            Debug.Log("I'm jumping");
             GetPlayer().GetComponent<PlayerMovement>().JumpPlayer();
         }
     }
@@ -29,6 +28,7 @@ public class UIButtons : MonoBehaviour
     public void MoveBtnExit()
     {
         isMoving = false;
+        GetPlayer().GetComponent<Animator>().SetFloat("speed", 0);
     }
 
 
