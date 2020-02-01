@@ -17,6 +17,10 @@ public class UIButtons : MonoBehaviour
         }
     }
 
+    public void JumpBtnExit()
+    {
+        
+    }
     public void MoveBtn()
     {
         if (GetPlayer())
