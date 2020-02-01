@@ -10,9 +10,10 @@ public class UIButtons : MonoBehaviour
     bool isMoving = false;
 
     public void JumpBtn()
-    {
+    {        
         if (GetPlayer())
         {
+            Debug.Log("I'm jumping");
             GetPlayer().GetComponent<PlayerMovement>().JumpPlayer();
         }
     }
@@ -36,7 +37,7 @@ public class UIButtons : MonoBehaviour
         return GameObject.FindGameObjectWithTag("Player");
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (isMoving)
         {
