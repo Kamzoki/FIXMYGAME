@@ -14,24 +14,16 @@ public class TouchHandling : MonoBehaviour
 
             if (Input.touchCount == 1)
             {
-                GameObject g = GetTouchedShopOnSingleTouch();
-                if (g)
-                {
-                    Debug.Log(g.name);
-                }
+                GetTouchedShopOnSingleTouch();
             }
             else
             {
-                GameObject g = GetTouchedShopOnMultipleTouchs();
-                if (g)
-                {
-                    Debug.Log(g.name);
-                }
+                GetTouchedShopOnMultipleTouchs();
             }
         }
     }
 
-    GameObject GetTouchedShopOnMultipleTouchs()
+    void GetTouchedShopOnMultipleTouchs()
     {
         for (int i = 0; i < Input.touchCount; i++)
         {
@@ -46,15 +38,14 @@ public class TouchHandling : MonoBehaviour
                 {
                     if (hit.transform.CompareTag("Enemy"))
                     {
-                        return hit.transform.gameObject;
+                        ChangeEnemyBehaviour(hit.transform.gameObject);
                     }
                 }
             }
         }
-        return null;
     }
 
-    GameObject GetTouchedShopOnSingleTouch()
+    void GetTouchedShopOnSingleTouch()
     {
         if (Input.touches[0].phase == _touchPhase)
         {
@@ -67,11 +58,10 @@ public class TouchHandling : MonoBehaviour
             {
                 if (hit.transform.CompareTag("Enemy"))
                 {
-                    return hit.transform.gameObject;
+                    ChangeEnemyBehaviour(hit.transform.gameObject);
                 }
             }
         }
-        return null;
     }
 
     void ChangeEnemyBehaviour(GameObject g)

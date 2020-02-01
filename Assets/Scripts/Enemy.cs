@@ -21,21 +21,16 @@ public class Enemy : MonoBehaviour
 
     public void ChangeBehaviour()
     {
-        if (currentBehaviourIndex < behaviours.Length)
-        {
-            currentBehaviourIndex++;
-        }
-        else
+        if (currentBehaviourIndex >= behaviours.Length - 1)
         {
             currentBehaviourIndex = 0;
         }
-    }
-
-    private void Update()
-    {
-        if (behaviours.Length > 0 && currentBehaviourIndex < behaviours.Length)
+        else
         {
-            behaviours[currentBehaviourIndex].ImplementBehaviour();
-        }
+            currentBehaviourIndex++;
+        }            
+        
+
+        behaviours[currentBehaviourIndex].ImplementBehaviour();
     }
 }

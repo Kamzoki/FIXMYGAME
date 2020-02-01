@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,10 +9,20 @@ public class GameManager : MonoBehaviour
     int sceneIndex;
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject loseMenu;
+    public bool tree;
+    public bool flippedGround;
+    public bool flyingTile;
+    public bool wood;
+    public bool rock;
+    public bool man;
+    public bool board;
+    public bool repairMode = true;
+    
 
     // Start is called before the first frame update
     void Start()
     {
+        repairMode = true;
          sceneIndex = SceneManager.GetActiveScene().buildIndex;
         pauseMenu.SetActive(false);
         loseMenu.SetActive(false);
@@ -20,7 +31,22 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        CheckWinStatus();
+
+
+    }
+
+    private void CheckWinStatus()
+    {
+        if (tree && flippedGround && rock && flyingTile && wood && man && board)
+        {
+            activateWinCondition();
+        }
+    }
+
+    private void activateWinCondition()
+    {
+        repairMode = false;
     }
 
     public void RestartGame()
