@@ -15,7 +15,8 @@ public class MovingPlatform : MonoBehaviour, IBehaviour
     public void ImplementBehaviour()
     {
         isMoving = true;
-        
+        GameManager gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        gm.IncreaseGlitchy();
     }
 
     private void Update()
@@ -29,6 +30,7 @@ public class MovingPlatform : MonoBehaviour, IBehaviour
             else
             {
                 isMoving = false;
+                
             }
         }
     }

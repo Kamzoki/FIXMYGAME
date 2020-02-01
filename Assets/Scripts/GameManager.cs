@@ -4,11 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class GameManager : MonoBehaviour
 {
     int sceneIndex;
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject loseMenu;
+    [SerializeField] SpriteRenderer glitchyBackGround;
+    [SerializeField] SpriteRenderer clearBackGround;
+    Color glitchyColor;
+    Color clearBackGroundColor;
     public bool tree;
     public bool flippedGround;
     public bool flyingTile;
@@ -17,22 +22,60 @@ public class GameManager : MonoBehaviour
     public bool man;
     public bool board;
     public bool repairMode = true;
+    public bool playMode = false;
+
+
     
 
     // Start is called before the first frame update
     void Start()
     {
         repairMode = true;
-         sceneIndex = SceneManager.GetActiveScene().buildIndex;
+        playMode = false;
+        sceneIndex = SceneManager.GetActiveScene().buildIndex;
         pauseMenu.SetActive(false);
         loseMenu.SetActive(false);
+
+        glitchyColor = glitchyBackGround.color;
+        clearBackGroundColor = clearBackGround.color;
+
+        glitchyColor.a = 1f;
+        clearBackGroundColor.a = 0f;
+
+        glitchyBackGround.color = glitchyColor;
+        clearBackGround.color = clearBackGroundColor;
+
+        
+    }
+
+    public void ReduceGlitchy()
+    {
+
+
+        glitchyColor.a -= 0.14f;
+        clearBackGroundColor.a += 0.14f;
+        UpdateAllBackGroundColors();
+
+    }
+
+    private void UpdateAllBackGroundColors()
+    {
+        glitchyBackGround.color = glitchyColor;
+        clearBackGround.color = clearBackGroundColor;
+    }
+
+    public void IncreaseGlitchy()
+    {
+        glitchyColor.a += 0.14f;
+        clearBackGroundColor.a -= 0.14f;
+        UpdateAllBackGroundColors();
     }
 
     // Update is called once per frame
     void Update()
     {
         CheckWinStatus();
-
+        
 
     }
 
@@ -47,6 +90,7 @@ public class GameManager : MonoBehaviour
     private void activateWinCondition()
     {
         repairMode = false;
+        playMode = true;
     }
 
     public void RestartGame()

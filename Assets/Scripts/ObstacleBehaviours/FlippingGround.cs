@@ -8,14 +8,19 @@ public class FlippingGround : MonoBehaviour, IBehaviour
 
     public void ImplementBehaviour()
     {
-        if (isFlipped && GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().repairMode)
+        GameManager gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+
+        if (isFlipped && gm.repairMode)
         {
             isFlipped = false;
             Vector3 scaler = transform.localScale;
 
             scaler.y *= -1;
             GetComponent<BoxCollider2D>().isTrigger = false;
-            transform.localScale = scaler; 
+            transform.localScale = scaler;
+            gm.flippedGround = true;
+            gm.ReduceGlitchy();
         }
+
     }
 }
