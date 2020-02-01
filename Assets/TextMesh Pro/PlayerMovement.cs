@@ -15,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
     float jumpThreshold = 0;
 
     public bool isJumping = false;
+    public bool isFalling = true;
+
     private bool isGrounded;
     public Transform groundCheck;
     public float checkRadius;
@@ -61,8 +63,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isGrounded)
         {
-            Vector2 jumpForce = new Vector2(rigBody.velocity.x, 1) * _JumpPower;
-            rigBody.AddForce(jumpForce);
+            Debug.Log("fuck");
+            isJumping = true;
         }
     }
 
@@ -70,6 +72,16 @@ public class PlayerMovement : MonoBehaviour
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
 
+        if (isJumping)
+        {
+            Vector2 jumpForce = new Vector2(rigBody.velocity.x, 1) * _JumpPower;
+            rigBody.AddForce(jumpForce, ForceMode2D.Impulse);
+        }
+
+        if (transform.position.y >= jumpThreshold)
+        {
+            isJumping = false;
+        }
     }
     private void FlipCharacter()
     {
