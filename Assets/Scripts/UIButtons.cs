@@ -48,4 +48,15 @@ public class UIButtons : MonoBehaviour
             GetPlayer().GetComponent<PlayerMovement>().MovePlayer(direction);
         }
     }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
+    public void PlayGame()
+    {
+        Time.timeScale = 1;
+        UnityEngine.SceneManagement.SceneManager.LoadScene("GameScene");
+    }
 }

@@ -33,4 +33,9 @@ public class Enemy : MonoBehaviour
 
         behaviours[currentBehaviourIndex].ImplementBehaviour();
     }
+
+    private void OnMouseDown()
+    {
+        ChangeBehaviour();
+    }
 }

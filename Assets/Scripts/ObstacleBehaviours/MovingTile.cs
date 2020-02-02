@@ -18,15 +18,15 @@ public class MovingTile : MonoBehaviour
     {
         if (gm.repairMode)
         {
-            if (transform.position == desiredPos && glitchySprite.activeSelf == true)
+            if (transform.position == desiredPos)
             {
+                Debug.Log("HERE");
                 glitchySprite.SetActive(false);
                 gm.flyingTile = true;
                 gm.ReduceGlitchy();
             }
             else
             {
-                glitchySprite.SetActive(true);
                 gm.flyingTile = false;
             }
         }

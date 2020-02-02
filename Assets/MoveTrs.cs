@@ -16,11 +16,20 @@ public class MoveTrs : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        float moveSpeed;
         if (pointCounter == 0)
         {
+            if (FindObjectOfType<GameManager>().board)
+            {
+                glitchySpeed = desiredSpeed;
+            }
+            else if (!FindObjectOfType<GameManager>().board)
+            {
+                glitchySpeed = 8;
+            }
             Vector3 target = upPoint.position;
-            float moveSpeed;
-            if (GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().repairMode)
+            
+            if (FindObjectOfType<GameManager>().GetComponent<GameManager>().repairMode)
             {
                 moveSpeed = glitchySpeed * Time.deltaTime;// modify to gliitch Speed
             }
@@ -39,8 +48,15 @@ public class MoveTrs : MonoBehaviour
         {
           
                 Vector3 target = downPoint.position;
-                var moveSpeed = speed * Time.deltaTime;
-                transform.position = Vector3.MoveTowards(transform.position, target, moveSpeed);
+            if (FindObjectOfType<GameManager>().GetComponent<GameManager>().repairMode)
+            {
+                moveSpeed = glitchySpeed * Time.deltaTime;// modify to gliitch Speed
+            }
+            else
+            {
+                moveSpeed = desiredSpeed * Time.deltaTime;// modify to gliitch Speed
+            }
+            transform.position = Vector3.MoveTowards(transform.position, target, moveSpeed);
                 if (transform.position == target)
                 {
                     pointCounter=0;

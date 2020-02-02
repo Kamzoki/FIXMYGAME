@@ -24,14 +24,15 @@ public class Board : MonoBehaviour, IBehaviour
 
             gameObject.GetComponent<SpriteRenderer>().sprite = boards[currentIndex];
 
-            if (currentIndex == boards.Length - 1)
+            if (currentIndex == 2)
             {
-                gm.flyingTile = true;
+                gm.board = true;
                 gm.ReduceGlitchy();
             }
             else
             {
                 gm.IncreaseGlitchy();
+                gm.board = false;
             }
         }
     }

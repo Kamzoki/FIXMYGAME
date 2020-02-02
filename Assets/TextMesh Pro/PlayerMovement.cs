@@ -45,7 +45,9 @@ public class PlayerMovement : MonoBehaviour
 
     public void MovePlayer (Vector2 direction)
     {
-        Vector2 newForce = direction * _Speed;
+        float x = direction.x * _Speed;
+        float y = rigBody.velocity.y;
+        Vector2 newForce = new Vector2(x, y);
         rigBody.velocity = newForce;
 
         myAnimation.SetFloat("speed", rigBody.velocity.magnitude);
@@ -63,7 +65,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isGrounded)
         {
-            Debug.Log("fuck");
             isJumping = true;
         }
     }
@@ -74,13 +75,24 @@ public class PlayerMovement : MonoBehaviour
 
         if (isJumping)
         {
-            Vector2 jumpForce = new Vector2(rigBody.velocity.x, 1) * _JumpPower;
-            rigBody.AddForce(jumpForce, ForceMode2D.Impulse);
+            Vector2 jumpForce = transform.up * _JumpPower;
+            rigBody.velocity = jumpForce;
+            myAnimation.SetTrigger("Jump");
         }
 
         if (transform.position.y >= jumpThreshold)
         {
+            Debug.Log(jumpThreshold);
             isJumping = false;
+            Vector2 fallForce = -transform.up * (_JumpPower * 1.2f);
+            rigBody.velocity = fallForce;
+            myAnimation.SetBool("isFalling", true);
+        }
+
+        if (isGrounded)
+        { 
+            jumpThreshold = _MaxJump + gameObject.transform.position.y;
+            myAnimation.SetBool("isFalling", false);
         }
     }
     private void FlipCharacter()
@@ -90,5 +102,13 @@ public class PlayerMovement : MonoBehaviour
 
         scaler.x *= -1;
         transform.localScale = scaler;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.transform.CompareTag("DEATH"))
+        {
+            FindObjectOfType<GameManager>().LoseMenu();
+        }
     }
 }

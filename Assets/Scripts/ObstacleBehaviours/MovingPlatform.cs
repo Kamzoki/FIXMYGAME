@@ -14,24 +14,20 @@ public class MovingPlatform : MonoBehaviour, IBehaviour
     bool isMoving = false;
     public void ImplementBehaviour()
     {
-        isMoving = true;
+        Vector2 newPos;
+        if (position.x == 0)
+        {
+            newPos.x = platform.position.x;
+            newPos.y = position.y;
+        }
+        else
+        {
+            newPos.x = position.x;
+            newPos.y = platform.position.y;
+        }
+        
+        platform.position = newPos;
         GameManager gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         gm.IncreaseGlitchy();
-    }
-
-    private void Update()
-    {
-        if (isMoving)
-        {
-            if (platform.position != position)
-            {
-                platform.Translate(position * speed * Time.deltaTime, Space.World);
-            }
-            else
-            {
-                isMoving = false;
-                
-            }
-        }
     }
 }

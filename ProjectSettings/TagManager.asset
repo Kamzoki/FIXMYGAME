@@ -7,6 +7,7 @@ TagManager:
   - LandScape
   - Enemy
   - GameManager
+  - DEATH
   layers:
   - Default
   - TransparentFX

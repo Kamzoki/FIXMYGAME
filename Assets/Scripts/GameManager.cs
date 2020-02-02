@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     int sceneIndex;
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject loseMenu;
+    [SerializeField] GameObject winMenu;
     [SerializeField] SpriteRenderer glitchyBackGround;
     [SerializeField] SpriteRenderer clearBackGround;
     Color glitchyColor;
@@ -19,13 +20,14 @@ public class GameManager : MonoBehaviour
     public bool flyingTile;
     public bool wood;
     public bool rock;
-    public bool man;
     public bool board;
     public bool repairMode = true;
     public bool playMode = false;
 
 
-    
+    public bool isDragging = false;
+
+    public Transform startPos;
 
     // Start is called before the first frame update
     void Start()
@@ -35,7 +37,7 @@ public class GameManager : MonoBehaviour
         sceneIndex = SceneManager.GetActiveScene().buildIndex;
         pauseMenu.SetActive(false);
         loseMenu.SetActive(false);
-
+        winMenu.SetActive(false);
         glitchyColor = glitchyBackGround.color;
         clearBackGroundColor = clearBackGround.color;
 
@@ -75,13 +77,23 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         CheckWinStatus();
+
+        if (isDragging)
+        {
+            FindObjectOfType<PlayerMovement>().gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+            FindObjectOfType<PlayerMovement>().gameObject.transform.position = Vector2.Lerp(FindObjectOfType<PlayerMovement>().gameObject.transform.position, startPos.position, 6 * Time.deltaTime);
+        }
+        else
+        {
+            FindObjectOfType<PlayerMovement>().gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
+        }
         
 
     }
 
     private void CheckWinStatus()
     {
-        if (tree && flippedGround && rock && flyingTile && wood && man && board)
+        if (tree && flippedGround && rock && flyingTile && board)
         {
             activateWinCondition();
         }
@@ -91,6 +103,9 @@ public class GameManager : MonoBehaviour
     {
         repairMode = false;
         playMode = true;
+
+        isDragging = true;
+
     }
 
     public void RestartGame()
@@ -100,12 +115,21 @@ public class GameManager : MonoBehaviour
         loseMenu.SetActive(false);
         SceneManager.LoadScene(sceneIndex);
     }
+    public void StartNormalPlay()
+    {
+        winMenu.SetActive(true);
+    }
 
 
     public void PauseGame()
     {
         Time.timeScale = 0f;
         pauseMenu.SetActive(true);
+    }
+
+    public void HomePage()
+    {
+        SceneManager.LoadScene("Home");
     }
 
     public void ResumeGame()
@@ -116,6 +140,7 @@ public class GameManager : MonoBehaviour
     public void LoseMenu()
     {
         loseMenu.SetActive(true);
+        Time.timeScale = 0;
     }
 
     public void QuitGame()
